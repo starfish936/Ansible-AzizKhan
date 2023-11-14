@@ -1,0 +1,24 @@
+---
+  - name: Deploy tomcat and Lastname package
+    hosts: HP-Z400-Workstation
+    become: yes
+    become_user: azkhan
+    become_method: sudo
+
+    tasks:
+      - name: Download tomcat tar file
+        get_url:
+          url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.82/bin/apache-tomcat-9.0.82.tar.gz
+          dest: /home/azkhan/appdata/apache-tomcat-9.0.82.tar.gz
+
+      - name: Extract the tar file to appdata location
+        unarchive:
+            src: /home/azkhan/appdata/apache-tomcat-9.0.82.tar.gz
+            dest: /home/azkhan/appdata/
+            remote_src: yes
+        become: yes
+
+      - name: Startup tomcat service
+        command:
+          cmd: nohup /home/azkhan/appdata/apache-tomcat-9.0.82/bin/startup.sh
+        become: yes 
